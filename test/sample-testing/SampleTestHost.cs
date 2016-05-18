@@ -28,8 +28,9 @@ namespace sample_testing
                 );
             _client = _server.CreateClient();
         }
+
         [Fact]
-        public async Task GetRoot_ReturnsHelloWorld()
+        public async Task Root_ReturnsHelloWorld()
         {
             // Act
             var response = await _client.GetAsync("/");
@@ -41,6 +42,21 @@ namespace sample_testing
             Assert.Equal("Hello, World!",
                 responseString);
 
+        }
+
+        [Fact]
+        public async Task Site_Category_Item_Request_Returns_FormattedString()
+        {
+            const string item = "speed";
+            // Act
+            var response = await _client.GetAsync($"/site/category/{item}");
+            response.EnsureSuccessStatusCode();
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            // Assert
+            Assert.Equal($"Your request for {item} is just fine.",
+                responseString);
         }
     }
 }
